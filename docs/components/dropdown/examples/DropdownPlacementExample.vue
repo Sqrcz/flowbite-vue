@@ -23,5 +23,5 @@
   </div>
 </template>
 <script setup>
-import { Dropdown, Spinner, Button } from '../../../../src/index'
+import { Dropdown, Spinner } from '../../../../src/index'
 </script>

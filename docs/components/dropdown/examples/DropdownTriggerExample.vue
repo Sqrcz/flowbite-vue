@@ -34,5 +34,5 @@
   </div>
 </template>
 <script setup>
-import { Dropdown, Button, ListGroup, ListGroupItem } from '../../../../src/index'
+import { Dropdown, ListGroup, ListGroupItem } from '../../../../src/index'
 </script>
