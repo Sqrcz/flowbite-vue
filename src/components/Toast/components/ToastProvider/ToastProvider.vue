@@ -13,7 +13,7 @@ import type { PropType } from 'vue'
 
 export default defineComponent({
   components: {
-    Toast: Toast as any,
+    Toast,
   },
   props: {
     transition: {
@@ -86,7 +86,7 @@ export default defineComponent({
                       onClose: () => removeToast(_toast.id),
                       ...(_toast.componentProps ? _toast.componentProps : {}),
                     }, () => _toast.text)
-                    : h(Toast as any, {
+                    : h(Toast, {
                       closable: true,
                       type: _toast.type,
                       key: _toast.id,

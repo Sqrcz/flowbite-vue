@@ -3,7 +3,7 @@ import { useAccordionState } from '@/components/Accordion/composables/useAccordi
 import classNames from 'classnames'
 
 const baseContentClasses = 'p-5 border border-gray-200 dark:border-gray-700 dark:bg-gray-900'
-export function useAccordionContentClasses(contentRef: any) {
+export function useAccordionContentClasses(contentRef) {
   const accordionId = computed(() => contentRef.value.parentElement.parentElement.dataset.accordionId)
   const panelId = computed(() => contentRef.value.parentElement.dataset.panelId)
   const { accordionsStates } = useAccordionState()
