@@ -50,25 +50,6 @@
     </div>
   </aside>
 </template>
+
 <script lang="ts" setup>
-import { computed, toRefs } from 'vue'
-import type { PropType } from 'vue'
-
-const props = defineProps({
-  children: {
-    type: Array,
-    default() {
-      return []
-    },
-  },
-  collapseBehavior: {
-    type: String, // 'collapse' | 'hide';
-    default: 'collapse',
-  },
-  collapsed: {
-    type: Boolean,
-    default: false,
-  },
-})
-
 </script>

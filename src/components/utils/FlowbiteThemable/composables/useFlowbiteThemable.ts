@@ -17,8 +17,6 @@ type UseFlowbiteThemableReturns = {
 type FlowbiteThemeMap = { background: string, disabled: string, hover: string, text: string, border: string, focus: string }
 type FlowbiteThemes<T extends string = string> = Record<T, FlowbiteThemeMap>
 
-const flowbiteThemesColors: FlowbiteTheme[] = ['blue', 'green', 'red', 'pink', 'purple']
-
 const flowbiteThemeClasses: FlowbiteThemes<FlowbiteTheme> = {
     blue: {
         background: 'bg-blue-700 dark:bg-blue-600',
@@ -60,7 +58,6 @@ const flowbiteThemeClasses: FlowbiteThemes<FlowbiteTheme> = {
         border: 'border-red-600 dark:border-red-500',
         focus: 'focus:ring-red-300 dark:focus:ring-red-900',
     },
-
 }
 
 export function useFlowbiteThemable(_theme?: FlowbiteTheme): UseFlowbiteThemableReturns {

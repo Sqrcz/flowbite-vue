@@ -23,7 +23,7 @@ const ms = ref(5000)
 const toast = useToast()
 
 const addUpdate = () => {
-  const id = toast.add({
+  toast.add({
     time: parseInt(ms.value) || 0,
     text: 'A new software version is available for download.',
     component: shallowRef(UpdateToast),

@@ -33,17 +33,4 @@
 
 <script lang="ts" setup>
 import { Tooltip } from '../../../../src/index'
-import type { PropType } from 'vue'
-import type { TooltipPlacement } from '../../../../src/components/Tooltip/types'
-
-const props = defineProps({
-placement: {
-  type: String as PropType<TooltipPlacement>,
-  default: 'top',
-},
-arrowColor: {
-    type: String,
-    default: '#0f172a',
-},
-})
 </script>
