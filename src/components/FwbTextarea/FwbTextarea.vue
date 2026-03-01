@@ -28,15 +28,16 @@ import { computed } from 'vue'
 
 import { useTextareaClasses } from './composables/useTextareaClasses'
 
-import type { CommonAutoFill } from './../FwbInput/types'
+import type { CommonAutoFill, InputSize } from './../FwbInput/types'
 
 interface TextareaProps {
-  modelValue?: string
-  label?: string
-  rows?: number
-  custom?: boolean
-  placeholder?: string
   autocomplete?: CommonAutoFill
+  custom?: boolean
+  label?: string
+  modelValue?: string
+  placeholder?: string
+  rows?: number
+  size?: InputSize
 }
 
 defineOptions({
@@ -44,12 +45,13 @@ defineOptions({
 })
 
 const props = withDefaults(defineProps<TextareaProps>(), {
-  modelValue: '',
-  label: '',
-  rows: 4,
-  custom: false,
-  placeholder: 'Write your message here...',
   autocomplete: 'off',
+  custom: false,
+  label: '',
+  modelValue: '',
+  placeholder: 'Write your message here...',
+  rows: 4,
+  size: 'md',
 })
 
 const emit = defineEmits(['update:modelValue'])
@@ -62,5 +64,5 @@ const model = computed({
   },
 })
 
-const { textareaClasses, labelClasses, wrapperClasses, footerClasses } = useTextareaClasses(props.custom)
+const { textareaClasses, labelClasses, wrapperClasses, footerClasses } = useTextareaClasses(props)
 </script>
