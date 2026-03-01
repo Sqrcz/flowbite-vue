@@ -1,68 +1,70 @@
 <template>
-  <div>
-    <div v-if="!dropzone">
-      <label>
-        <span :class="labelClasses">{{ label }}</span>
-        <input
-          :accept="accept"
-          :class="fileInpClasses"
-          :multiple="multiple"
-          type="file"
-          @change="handleChange"
+  <div
+    v-if="!dropzone"
+    v-bind="$attrs"
+  >
+    <label>
+      <span :class="labelClasses">{{ label }}</span>
+      <input
+        :accept="accept"
+        :class="fileInpClasses"
+        :multiple="multiple"
+        type="file"
+        @change="handleChange"
+      >
+    </label>
+    <slot />
+  </div>
+  <div
+    v-else
+    v-bind="$attrs"
+    class="flex flex-col justify-center items-center"
+    @dragover="dragOverHandler"
+    @drop="dropFileHandler"
+  >
+    <span
+      v-if="label !== ''"
+      :class="labelClasses"
+    >{{ label }}</span>
+    <label :class="dropzoneLabelClasses">
+      <div :class="dropzoneWrapClasses">
+        <svg
+          aria-hidden="true"
+          class="size-8 text-gray-500 dark:text-gray-400"
+          fill="none"
+          viewBox="0 0 20 16"
+          xmlns="http://www.w3.org/2000/svg"
         >
-      </label>
-      <slot />
-    </div>
-    <div
-      v-else
-      class="flex flex-col justify-center items-center"
-      @dragover="dragOverHandler"
-      @drop="dropFileHandler"
-    >
-      <span
-        v-if="label !== ''"
-        :class="labelClasses"
-      >{{ label }}</span>
-      <label :class="dropzoneLabelClasses">
-        <div :class="dropzoneWrapClasses">
-          <svg
-            aria-hidden="true"
-            class="size-8 text-gray-500 dark:text-gray-400"
-            fill="none"
-            viewBox="0 0 20 16"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              stroke="currentColor"
-            />
-          </svg>
-          <div v-if="(!model || (Array.isArray(model) && model.length === 0))">
-            <p :class="dropzoneTextClasses">
-              <slot name="dropzonePlaceholder">
-                <span class="font-semibold">Click to upload</span>
-                or drag and drop
-              </slot>
-            </p>
-            <slot />
-          </div>
-          <p
-            v-else
-            class="text-center"
-          >File: {{ dropZoneText }}</p>
+          <path
+            d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            stroke="currentColor"
+          />
+        </svg>
+        <div v-if="(!model || (Array.isArray(model) && model.length === 0))">
+          <p :class="dropzoneTextClasses">
+            <slot name="dropzonePlaceholder">
+              <span class="font-semibold">Click to upload</span>
+              or drag and drop
+            </slot>
+          </p>
+          <slot />
         </div>
-        <input
-          :accept="accept"
-          :multiple="multiple"
-          class="hidden"
-          type="file"
-          @change="handleChange"
-        >
-      </label>
-    </div>
+        <p
+          v-else
+          class="text-center"
+        >File: {{ dropZoneText }}</p>
+      </div>
+      <input
+        :accept="accept"
+        :multiple="multiple"
+        class="hidden"
+        type="file"
+        @change="handleChange"
+      >
+    </label>
   </div>
 </template>
 
@@ -72,13 +74,17 @@ import { computed } from 'vue'
 
 import { useFileInputClasses } from './composables/useFileInputClasses'
 
+import type { InputSize } from '@/components/FwbInput/types'
+
+defineOptions({ inheritAttrs: false })
+
 interface FileInputProps {
   accept?: string
   dropzone?: boolean
   label?: string
   modelValue?: File | File[] | null
   multiple?: boolean
-  size?: string
+  size?: InputSize
 }
 
 const props = withDefaults(defineProps<FileInputProps>(), {
@@ -171,5 +177,5 @@ const {
   dropzoneWrapClasses,
   fileInpClasses,
   labelClasses,
-} = useFileInputClasses(props.size)
+} = useFileInputClasses(props)
 </script>
