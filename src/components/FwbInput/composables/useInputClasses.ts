@@ -19,12 +19,12 @@ const inputSizeClasses: Record<FormElementSize, string> = {
   xl: 'px-4 py-3.5 text-base',
 }
 
-const errorInputWrapperClasses = 'bg-red-50 border-red-500 text-red-900 placeholder-red-700 has-[input:focus]:ring-red-500 has-[input:focus]:border-red-500 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500'
-const errorTextClasses = 'text-red-700 dark:text-red-500'
-const successInputWrapperClasses = 'bg-green-50 border-green-500 dark:border-green-500 text-green-900 dark:text-green-400 placeholder-green-700 dark:placeholder-green-500 has-[input:focus]:ring-green-500 has-[input:focus]:border-green-500 '
-const successTextClasses = 'text-green-700 dark:text-green-500'
-const errorInputClasses = 'text-red-900 placeholder-red-700 dark:placeholder-red-500'
-const successInputClasses = 'text-green-900 dark:text-green-400 placeholder-green-700 dark:placeholder-green-500'
+const errorInputWrapperClasses = 'bg-red-50 border-rose-200 text-rose-900 placeholder-rose-700 has-[input:focus]:ring-rose-500 has-[input:focus]:border-rose-700 dark:text-rose-500 dark:placeholder-rose-500 dark:border-rose-500'
+const errorTextClasses = 'text-rose-900 dark:text-rose-500'
+const successInputWrapperClasses = 'bg-green-50 border-emerald-200 dark:border-emerald-500 text-emerald-900 dark:text-emerald-400 placeholder-emerald-700 dark:placeholder-emerald-500 has-[input:focus]:ring-emerald-500 has-[input:focus]:border-emerald-500 '
+const successTextClasses = 'text-emerald-900 dark:text-emerald-500'
+const errorInputClasses = 'text-rose-900 placeholder-rose-900 dark:placeholder-rose-500'
+const successInputClasses = 'text-emerald-900 dark:text-emerald-400 placeholder-emerald-900 dark:placeholder-emerald-500'
 
 export type UseInputClassesProps = {
   class: Ref<string | Record<string, boolean>>

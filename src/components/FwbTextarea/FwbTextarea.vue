@@ -28,16 +28,16 @@ import { computed } from 'vue'
 
 import { useTextareaClasses } from './composables/useTextareaClasses'
 
-import type { CommonAutoFill, InputSize } from './../FwbInput/types'
+import type { Autocomplete, FormElementSize } from '@/types/form'
 
 interface TextareaProps {
-  autocomplete?: CommonAutoFill
+  autocomplete?: Autocomplete
   custom?: boolean
   label?: string
   modelValue?: string
   placeholder?: string
   rows?: number
-  size?: InputSize
+  size?: FormElementSize
 }
 
 defineOptions({

@@ -1,6 +1,6 @@
 import { computed, type Ref } from 'vue'
 
-import type { InputSize } from '@/components/FwbInput/types'
+import type { FormElementSize } from '@/types/form'
 
 // Toggle Background
 const defaultLabelClasses = 'w-fit relative inline-flex items-center cursor-pointer'
@@ -17,7 +17,7 @@ const toggleBallOrderClasses: Record<string, string> = {
   reverse: 'me-3',
 }
 
-const toggleSizeClasses: Record<InputSize, string> = {
+const toggleSizeClasses: Record<FormElementSize, string> = {
   sm: 'w-9 h-5 after:top-[2px] after:start-[2px] after:h-4 after:w-4',
   md: 'w-11 h-6 after:top-[2px] after:start-[2px] after:h-5 after:w-5',
   lg: 'w-14 h-7 after:top-0.5 after:start-[4px] after:h-6 after:w-6',
@@ -36,7 +36,7 @@ const toggleColorClasses: Record<string, string> = {
 export type UseToggleClassesProps = {
   color: Ref<string>
   reverse: Ref<boolean>
-  size: Ref<InputSize>
+  size: Ref<FormElementSize>
 }
 
 export function useToggleClasses (props: UseToggleClassesProps) {

@@ -73,6 +73,9 @@ npm i flowbite flowbite-vue
 2. Update `style.css` file
 
 ```css
+/* keep tailwindcss import */
+@import "tailwindcss";
+
 /* import Flowbite Vue styles */
 @import "flowbite-vue/index.css";
 

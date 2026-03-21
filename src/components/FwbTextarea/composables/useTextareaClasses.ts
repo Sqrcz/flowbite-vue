@@ -1,6 +1,6 @@
 import { computed } from 'vue'
 
-import type { InputSize } from '@/components/FwbInput/types'
+import type { FormElementSize } from '@/types/form'
 
 import { useMergeClasses } from '@/composables/useMergeClasses'
 
@@ -9,14 +9,14 @@ const textareaDefaultClasses = 'block p-2.5 w-full text-sm text-gray-900 bg-gray
 const textareaLabelClasses = 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'
 const textareaFooterClasses = 'block py-2 px-3 border-gray-200 dark:border-gray-600'
 
-const textareaSizeClasses: Record<InputSize, string> = {
+const textareaSizeClasses: Record<FormElementSize, string> = {
   sm: 'px-2.5 py-2 text-sm',
   md: 'px-3 py-2.5 text-sm',
   lg: 'px-3.5 py-3 text-base',
   xl: 'px-4 py-3.5 text-base',
 }
 
-export function useTextareaClasses ({ custom, size }: { custom: boolean, size: InputSize }) {
+export function useTextareaClasses ({ custom, size }: { custom: boolean, size: FormElementSize }) {
   const textareaClasses = computed(() => useMergeClasses([
     textareaDefaultClasses,
     textareaSizeClasses[size],

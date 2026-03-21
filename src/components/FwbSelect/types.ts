@@ -1,13 +1,25 @@
-export type InputSize = 'sm' | 'md' | 'lg'
+import type { Autocomplete, FormElementSize, ValidationStatus } from '@/types/form'
+
+export type { ValidationStatus }
+export { validationStatusMap } from '@/types/form'
 
 export type OptionsType = {
   name: string
   value: string
 }
 
-export const validationStatusMap = {
-  Success: 'success',
-  Error: 'error',
-} as const
-
-export type ValidationStatus = typeof validationStatusMap[keyof typeof validationStatusMap]
+export interface SelectProps {
+  autocomplete?: Autocomplete
+  class?: string | Record<string, boolean>
+  clearable?: boolean
+  disabled?: boolean
+  label?: string
+  labelClass?: string | Record<string, boolean>
+  options?: OptionsType[]
+  placeholder?: string
+  required?: boolean
+  size?: FormElementSize
+  underline?: boolean
+  validationStatus?: ValidationStatus
+  wrapperClass?: string | Record<string, boolean>
+}

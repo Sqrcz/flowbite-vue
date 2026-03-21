@@ -1,6 +1,6 @@
 import { computed } from 'vue'
 
-import type { InputSize } from '@/components/FwbInput/types'
+import type { FormElementSize } from '@/types/form'
 
 import { useMergeClasses } from '@/composables/useMergeClasses'
 
@@ -13,14 +13,14 @@ const fileInpDropzoneClasses = 'flex flex-col justify-center items-center bg-gra
 const fileDropzoneWrapClasses = 'flex flex-col justify-center items-center pt-5 pb-6'
 const fileDropzoneDefaultTextClasses = '-mb-2! text-gray-500 dark:text-gray-400 text-sm'
 
-const inputSizeClasses: Record<InputSize, string> = {
+const inputSizeClasses: Record<FormElementSize, string> = {
   sm: 'file:mr-2.5 p-0 file:px-2.5 file:py-2 text-sm file:text-sm',
   md: 'file:mr-3 p-0 file:px-3 file:py-2.5 text-sm file:text-sm',
   lg: 'file:mr-3.5 p-0 file:px-3.5 file:py-3 text-base file:text-base',
   xl: 'file:mr-4 p-0 file:px-4 file:py-3.5 text-base file:text-base',
 }
 
-export function useFileInputClasses ({ size }: { size: InputSize }) {
+export function useFileInputClasses ({ size }: { size: FormElementSize }) {
   const fileInpClasses = computed(() => useMergeClasses([
     fileInpDefaultClasses,
     fileInputButtonDefaultClasses,

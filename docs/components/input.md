@@ -24,7 +24,7 @@ The input field is an important part of the form element that can be used to cre
 
 On this page you will find all of the input types based on multiple variants, styles, colors, and sizes built with the utility classes from Tailwind CSS and components from Flowbite.
 
-## Default
+## Input
 
 <fwb-input-example />
 ```vue
@@ -44,7 +44,7 @@ const name = ref('')
 </script>
 ```
 
-## Size
+## Input sizes
 
 <fwb-input-example-size />
 ```vue
@@ -83,7 +83,7 @@ const name = ref('')
 </script>
 ```
 
-## Disabled
+## Disabled state
 
 <fwb-input-example-disabled />
 ```vue
@@ -104,7 +104,50 @@ const name = ref('')
 </script>
 ```
 
-## Required
+## Validation
+
+- Set validation status via `validationStatus` prop, which accepts `'success'` or `'error'`.
+- Add validation message via `validationMessage` slot.
+
+<fwb-input-example-validation />
+```vue
+<template>
+  <fwb-input
+    v-model="name"
+    label="Your name"
+    placeholder="Success input"
+    required
+    validation-status="success"
+  >
+    <template #validationMessage>
+      <span class="font-medium">Well done!</span> Some success message.
+    </template>
+  </fwb-input>
+  <hr class="mt-4 border-0">
+  <fwb-input
+    v-model="name"
+    label="Your name"
+    placeholder="Error input"
+    required
+    validation-status="error"
+  >
+    <template #validationMessage>
+      <span class="font-medium">Oh, snapp!</span> Some error message.
+    </template>
+  </fwb-input>
+</template>
+
+<script lang="ts" setup>
+import { ref } from 'vue'
+import { FwbInput } from 'flowbite-vue'
+
+const name = ref('')
+</script>
+```
+
+
+<!-- required part is not needed, and can be just mentioned in props -->
+<!-- ## Required
 
 <fwb-input-example-required />
 ```vue
@@ -123,7 +166,7 @@ import { FwbInput } from 'flowbite-vue'
 
 const name = ref('')
 </script>
-```
+``` -->
 
 ## Slot - Helper
 
@@ -203,46 +246,6 @@ const query = ref('')
 </script>
 ```
 
-## Slot - Validation
-
-- Set validation status via `validationStatus` prop, which accepts `'success'` or `'error'`.
-- Add validation message via `validationMessage` slot.
-
-<fwb-input-example-validation />
-```vue
-<template>
-  <fwb-input
-    v-model="name"
-    label="Your name"
-    placeholder="Success input"
-    required
-    validation-status="success"
-  >
-    <template #validationMessage>
-      <span class="font-medium">Well done!</span> Some success message.
-    </template>
-  </fwb-input>
-  <hr class="mt-4 border-0">
-  <fwb-input
-    v-model="name"
-    label="Your name"
-    placeholder="Error input"
-    required
-    validation-status="error"
-  >
-    <template #validationMessage>
-      <span class="font-medium">Oh, snapp!</span> Some error message.
-    </template>
-  </fwb-input>
-</template>
-
-<script lang="ts" setup>
-import { ref } from 'vue'
-import { FwbInput } from 'flowbite-vue'
-
-const name = ref('')
-</script>
-```
 
 ## Styling Inputs
 

@@ -1,6 +1,6 @@
 import { computed, type Ref } from 'vue'
 
-import type { InputSize } from '@/components/FwbInput/types'
+import type { FormElementSize } from '@/types/form'
 
 import { useMergeClasses } from '@/composables/useMergeClasses'
 
@@ -30,7 +30,7 @@ export interface UseAutocompleteClassesProps {
 
 export function useAutocompleteClasses (props: UseAutocompleteClassesProps): {
   dropdownClasses: Ref<string>
-  getDropdownItemClasses: (isHighlighted: boolean, size: InputSize) => string
+  getDropdownItemClasses: (isHighlighted: boolean, size: FormElementSize) => string
   messageClasses: Ref<string>
   wrapperClasses: Ref<string>
 } {
@@ -45,7 +45,7 @@ export function useAutocompleteClasses (props: UseAutocompleteClassesProps): {
     props.dropdownClass.value,
   ]))
 
-  const getDropdownItemClasses = (isHighlighted: boolean, size: InputSize) => useMergeClasses([
+  const getDropdownItemClasses = (isHighlighted: boolean, size: FormElementSize) => useMergeClasses([
     baseDropdownItemClasses,
     isHighlighted ? highlightedDropdownItemClasses : hoverDropdownItemClasses,
     dropdownItemSizeClasses[size] ?? '',

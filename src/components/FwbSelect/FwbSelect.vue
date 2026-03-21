@@ -1,44 +1,43 @@
 <template>
-  <div>
-    <label>
-      <span
-        v-if="label"
-        :class="labelClasses"
+  <div :class="wrapperClass">
+    <label
+      v-if="label"
+      :class="labelClasses"
+      :for="selectId"
+    >{{ label }}</label>
+    <select
+      v-bind="selectAttributes"
+      v-model="model"
+      :autocomplete="autocomplete"
+      :class="selectClasses"
+      :disabled="disabled"
+      :required="required"
+    >
+      <option
+        :disabled="!clearable"
+        :hidden="!clearable"
+        class="text-gray-500 dark:text-gray-400"
+        value=""
       >
-        {{ label }}
-      </span>
-      <select
-        v-model="model"
-        :disabled="disabled"
-        :required="required"
-        :class="selectClasses"
-        :autocomplete="autocomplete"
+        {{ placeholder }}
+      </option>
+      <option
+        v-for="(option, index) in options"
+        :key="index"
+        :value="option.value"
       >
-        <option
-          disabled
-          selected
-          value=""
-        >
-          {{ placeholder }}
-        </option>
-        <option
-          v-for="(option, index) in options"
-          :key="index"
-          :value="option.value"
-        >
-          {{ option.name }}
-        </option>
-      </select>
-    </label>
+        {{ option.name }}
+      </option>
+    </select>
     <p
       v-if="$slots.validationMessage"
-      :class="validationWrapperClasses"
+      :class="validationMessageClass"
     >
       <slot name="validationMessage" />
     </p>
     <p
       v-if="$slots.helper"
-      class="mt-2 text-sm text-gray-500 dark:text-gray-400"
+      :class="helperMessageClass"
     >
       <slot name="helper" />
     </p>
@@ -46,48 +45,40 @@
 </template>
 
 <script lang="ts" setup>
-import { useVModel } from '@vueuse/core'
-import { twMerge } from 'tailwind-merge'
-import { computed, toRefs } from 'vue'
+import { toRefs } from 'vue'
 
+import { useSelectAttributes } from './composables/useSelectAttributes'
 import { useSelectClasses } from './composables/useSelectClasses'
-import { type OptionsType, type ValidationStatus, validationStatusMap } from './types'
 
-import type { CommonAutoFill, InputSize } from './../FwbInput/types'
+import type { SelectProps } from './types'
 
-interface InputProps {
-  modelValue?: string
-  label?: string
-  options?: OptionsType[]
-  placeholder?: string
-  disabled?: boolean
-  required?: boolean
-  underline?: boolean
-  size?: InputSize
-  autocomplete?: CommonAutoFill
-  validationStatus?: ValidationStatus
-}
-const props = withDefaults(defineProps<InputProps>(), {
-  modelValue: '',
+defineOptions({
+  inheritAttrs: false,
+})
+
+const props = withDefaults(defineProps<SelectProps>(), {
+  class: '',
+  clearable: false,
+  disabled: false,
   label: '',
+  labelClass: '',
   options: () => [],
   placeholder: 'Please select one',
-  disabled: false,
   required: false,
-  underline: false,
   size: 'md',
-  autocomplete: 'off',
+  underline: false,
   validationStatus: undefined,
+  wrapperClass: '',
 })
-const emit = defineEmits(['update:modelValue'])
 
-const model = useVModel(props, 'modelValue', emit)
+const model = defineModel<string>({ default: '' })
+const { selectId, selectAttributes } = useSelectAttributes()
 
-const { selectClasses, labelClasses } = useSelectClasses(toRefs(props))
-
-const validationWrapperClasses = computed(() => twMerge(
-  'mt-2 text-sm',
-  props.validationStatus === validationStatusMap.Success ? 'text-green-600 dark:text-green-500' : '',
-  props.validationStatus === validationStatusMap.Error ? 'text-red-600 dark:text-red-500' : '',
-))
+const {
+  wrapperClass,
+  labelClasses,
+  selectClasses,
+  validationMessageClass,
+  helperMessageClass,
+} = useSelectClasses(toRefs(props))
 </script>

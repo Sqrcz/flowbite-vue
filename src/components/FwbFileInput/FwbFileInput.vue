@@ -74,7 +74,7 @@ import { computed } from 'vue'
 
 import { useFileInputClasses } from './composables/useFileInputClasses'
 
-import type { InputSize } from '@/components/FwbInput/types'
+import type { FormElementSize } from '@/types/form'
 
 defineOptions({ inheritAttrs: false })
 
@@ -84,7 +84,7 @@ interface FileInputProps {
   label?: string
   modelValue?: File | File[] | null
   multiple?: boolean
-  size?: InputSize
+  size?: FormElementSize
 }
 
 const props = withDefaults(defineProps<FileInputProps>(), {
