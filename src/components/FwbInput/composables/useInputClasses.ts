@@ -4,10 +4,10 @@ import { useMergeClasses } from '@/composables/useMergeClasses'
 import { type FormElementSize, type ValidationStatus, validationStatusMap } from '@/types/form'
 
 const defaultWrapperClasses = ''
-const defaultLabelClasses = 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'
-const defaultInputWrapperClasses = 'relative flex items-center has-[input:focus]:ring-offset-0 has-[input:focus]:ring-1 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg has-[input:focus]:ring-blue-500 has-[input:focus]:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:has-[input:focus]:ring-blue-500 dark:has-[input:focus]:border-blue-500'
-const defaultInputClasses = 'block grow w-full p-0 bg-transparent text-inherit ring-offset-0 ring-0 border-0 focus:ring-offset-0 focus:ring-0 focus:border-0 dark:placeholder-gray-400'
-const defaultHelperClasses = 'mt-2 text-sm text-gray-500 dark:text-gray-400'
+const defaultLabelClasses = 'block mb-2 font-medium text-gray-900 dark:text-white text-sm'
+const defaultInputWrapperClasses = 'relative flex items-center bg-gray-50 dark:bg-gray-700 border border-gray-300 has-[input:focus]:border-blue-500 dark:border-gray-600 dark:has-[input:focus]:border-blue-500 rounded-lg has-[input:focus]:ring-1 has-[input:focus]:ring-blue-500 dark:has-[input:focus]:ring-blue-500 has-[input:focus]:ring-offset-0 text-gray-900 dark:text-white'
+const defaultInputClasses = 'block bg-transparent p-0 border-0 focus:border-0 focus:outline-none dark:focus:outline-none ring-0 focus:ring-0 dark:focus:ring-0 ring-offset-0 focus:ring-offset-0 w-full text-inherit dark:placeholder-gray-400 grow'
+const defaultHelperClasses = 'mt-2 text-gray-500 dark:text-gray-400 text-sm'
 
 const disabledInputWrapperClasses = 'bg-gray-100'
 const disabledInputClasses = 'cursor-not-allowed'
@@ -19,9 +19,9 @@ const inputSizeClasses: Record<FormElementSize, string> = {
   xl: 'px-4 py-3.5 text-base',
 }
 
-const errorInputWrapperClasses = 'bg-red-50 border-rose-200 text-rose-900 placeholder-rose-700 has-[input:focus]:ring-rose-500 has-[input:focus]:border-rose-700 dark:text-rose-500 dark:placeholder-rose-500 dark:border-rose-500'
+const errorInputWrapperClasses = 'bg-red-50 border-rose-200 has-[input:focus]:border-rose-700 dark:border-rose-500 has-[input:focus]:ring-rose-500 text-rose-900 dark:text-rose-500 placeholder-rose-700 dark:placeholder-rose-500'
 const errorTextClasses = 'text-rose-900 dark:text-rose-500'
-const successInputWrapperClasses = 'bg-green-50 border-emerald-200 dark:border-emerald-500 text-emerald-900 dark:text-emerald-400 placeholder-emerald-700 dark:placeholder-emerald-500 has-[input:focus]:ring-emerald-500 has-[input:focus]:border-emerald-500 '
+const successInputWrapperClasses = 'bg-green-50 border-emerald-200 has-[input:focus]:border-emerald-500 dark:border-emerald-500 has-[input:focus]:ring-emerald-500 text-emerald-900 dark:text-emerald-400 placeholder-emerald-700 dark:placeholder-emerald-500'
 const successTextClasses = 'text-emerald-900 dark:text-emerald-500'
 const errorInputClasses = 'text-rose-900 placeholder-rose-900 dark:placeholder-rose-500'
 const successInputClasses = 'text-emerald-900 dark:text-emerald-400 placeholder-emerald-900 dark:placeholder-emerald-500'
