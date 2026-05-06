@@ -1,43 +1,64 @@
 <template>
-  <label>
-    <span
+  <div :class="wrapperClass">
+    <label
       v-if="label"
-      :class="labelClasses"
-    >{{ label }}</span>
-    <span :class="wrapperClasses">
+      :for="textareaId"
+      :class="labelClass"
+    >{{ label }}</label>
+    <div :class="textareaWrapperClass">
       <textarea
+        v-bind="textareaAttributes"
         v-model="model"
-        v-bind="$attrs"
-        :class="textareaClasses"
-        :rows="rows"
-        :placeholder="placeholder"
         :autocomplete="autocomplete"
+        :class="textareaClass"
+        :disabled="disabled"
+        :required="required"
+        :rows="rows"
       />
-      <span
+      <div
         v-if="$slots.footer"
-        :class="footerClasses"
+        :class="footerClass"
       >
         <slot name="footer" />
-      </span>
-    </span>
-  </label>
+      </div>
+    </div>
+    <p
+      v-if="$slots.validationMessage"
+      :class="validationMessageClass"
+    >
+      <slot name="validationMessage" />
+    </p>
+    <p
+      v-if="$slots.helper"
+      :class="helperMessageClass"
+    >
+      <slot name="helper" />
+    </p>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { toRefs } from 'vue'
 
 import { useTextareaClasses } from './composables/useTextareaClasses'
 
-import type { Autocomplete, FormElementSize } from '@/types/form'
+import type { Autocomplete, FormElementSize, ValidationStatus } from '@/types/form'
+
+import { useElementAttributes } from '@/composables/useElementAttributes'
 
 interface TextareaProps {
   autocomplete?: Autocomplete
-  custom?: boolean
+  class?: string | Record<string, boolean>
+  disabled?: boolean
+  footerClass?: string | Record<string, boolean>
   label?: string
-  modelValue?: string
-  placeholder?: string
+  labelClass?: string | Record<string, boolean>
+  required?: boolean
   rows?: number
   size?: FormElementSize
+  textareaClass?: string | Record<string, boolean>
+  validationStatus?: ValidationStatus
+  wrapperClass?: string | Record<string, boolean>
 }
 
 defineOptions({
@@ -46,23 +67,30 @@ defineOptions({
 
 const props = withDefaults(defineProps<TextareaProps>(), {
   autocomplete: 'off',
-  custom: false,
+  class: '',
+  disabled: false,
+  footerClass: '',
   label: '',
-  modelValue: '',
-  placeholder: 'Write your message here...',
+  labelClass: '',
+  required: false,
   rows: 4,
   size: 'md',
+  textareaClass: '',
+  validationStatus: undefined,
+  wrapperClass: '',
 })
 
-const emit = defineEmits(['update:modelValue'])
-const model = computed({
-  get () {
-    return props.modelValue
-  },
-  set (val) {
-    emit('update:modelValue', val)
-  },
-})
+const model = defineModel<string>({ default: '' })
 
-const { textareaClasses, labelClasses, wrapperClasses, footerClasses } = useTextareaClasses(props)
+const { elementId: textareaId, elementAttributes: textareaAttributes } = useElementAttributes()
+
+const {
+  footerClass,
+  helperMessageClass,
+  labelClass,
+  textareaClass,
+  textareaWrapperClass,
+  validationMessageClass,
+  wrapperClass,
+} = useTextareaClasses(toRefs(props))
 </script>

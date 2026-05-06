@@ -5,8 +5,8 @@ import { type FormElementSize, type ValidationStatus, validationStatusMap } from
 
 const defaultWrapperClasses = ''
 const defaultLabelClasses = 'block mb-2 font-medium text-gray-900 dark:text-white text-sm'
-const defaultInputWrapperClasses = 'relative flex items-center bg-gray-50 dark:bg-gray-700 border border-gray-300 has-[input:focus]:border-blue-500 dark:border-gray-600 dark:has-[input:focus]:border-blue-500 rounded-lg has-[input:focus]:ring-1 has-[input:focus]:ring-blue-500 dark:has-[input:focus]:ring-blue-500 has-[input:focus]:ring-offset-0 text-gray-900 dark:text-white'
-const defaultInputClasses = 'block bg-transparent p-0 border-0 focus:border-0 focus:outline-none dark:focus:outline-none ring-0 focus:ring-0 dark:focus:ring-0 ring-offset-0 focus:ring-offset-0 w-full text-inherit dark:placeholder-gray-400 grow'
+const defaultInputWrapperClasses = 'relative flex items-center bg-gray-50 dark:bg-gray-700 border border-gray-300 has-[input:focus]:border-blue-500 dark:border-gray-600 dark:has-[input:focus]:border-blue-500 rounded-lg shadow-xs has-[input:focus]:ring-1 has-[input:focus]:ring-blue-500 dark:has-[input:focus]:ring-blue-500 text-gray-900 dark:text-white'
+const defaultInputClasses = 'block bg-transparent p-0 border-0 focus:border-0 focus:outline-none dark:focus:outline-none ring-0 focus:ring-0 dark:focus:ring-0 ring-offset-0 focus:ring-offset-0 w-full text-inherit placeholder:text-gray-400 dark:placeholder:text-gray-400 grow'
 const defaultHelperClasses = 'mt-2 text-gray-500 dark:text-gray-400 text-sm'
 
 const disabledInputWrapperClasses = 'bg-gray-100'
@@ -19,7 +19,7 @@ const inputSizeClasses: Record<FormElementSize, string> = {
   xl: 'px-4 py-3.5 text-base',
 }
 
-const errorInputWrapperClasses = 'bg-red-50 border-rose-200 has-[input:focus]:border-rose-700 dark:border-rose-500 has-[input:focus]:ring-rose-500 text-rose-900 dark:text-rose-500 placeholder-rose-700 dark:placeholder-rose-500'
+const errorInputWrapperClasses = 'bg-red-50 border-rose-200 has-[input:focus]:border-rose-500 dark:border-rose-500 has-[input:focus]:ring-rose-500 text-rose-900 dark:text-rose-500 placeholder-rose-700 dark:placeholder-rose-500'
 const errorTextClasses = 'text-rose-900 dark:text-rose-500'
 const successInputWrapperClasses = 'bg-green-50 border-emerald-200 has-[input:focus]:border-emerald-500 dark:border-emerald-500 has-[input:focus]:ring-emerald-500 text-emerald-900 dark:text-emerald-400 placeholder-emerald-700 dark:placeholder-emerald-500'
 const successTextClasses = 'text-emerald-900 dark:text-emerald-500'
