@@ -10,6 +10,7 @@ export type OptionsType = {
 
 export interface SelectProps {
   autocomplete?: Autocomplete
+  chevronClass?: string | Record<string, boolean>
   class?: string | Record<string, boolean>
   clearable?: boolean
   disabled?: boolean

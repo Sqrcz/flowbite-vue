@@ -2,33 +2,57 @@
   <div :class="wrapperClass">
     <label
       v-if="label"
-      :class="labelClasses"
+      :class="labelClass"
       :for="selectId"
     >{{ label }}</label>
-    <select
-      v-bind="selectAttributes"
-      v-model="model"
-      :autocomplete="autocomplete"
-      :class="selectClasses"
-      :disabled="disabled"
-      :required="required"
-    >
-      <option
-        :disabled="!clearable"
-        :hidden="!clearable"
-        class="text-gray-500 dark:text-gray-400"
-        value=""
+    <div class="relative">
+      <select
+        v-bind="selectAttributes"
+        v-model="model"
+        :autocomplete="autocomplete"
+        :class="selectClass"
+        :disabled="disabled"
+        :required="required"
       >
-        {{ placeholder }}
-      </option>
-      <option
-        v-for="(option, index) in options"
-        :key="index"
-        :value="option.value"
+        <option
+          :disabled="!clearable"
+          :hidden="!clearable"
+          class="text-gray-500 dark:text-gray-400"
+          value=""
+        >
+          {{ placeholder }}
+        </option>
+        <option
+          v-for="(option, index) in options"
+          :key="index"
+          :value="option.value"
+        >
+          {{ option.name }}
+        </option>
+      </select>
+      <div
+        class="pointer-events-none absolute inset-y-0 right-3 flex items-center"
+        :class="chevronClass"
       >
-        {{ option.name }}
-      </option>
-    </select>
+        <slot name="chevron">
+          <svg
+            aria-hidden="true"
+            class="size-2.5"
+            fill="none"
+            viewBox="0 0 10 6"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="m1 1 4 4 4-4"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+            />
+          </svg>
+        </slot>
+      </div>
+    </div>
     <p
       v-if="$slots.validationMessage"
       :class="validationMessageClass"
@@ -57,6 +81,7 @@ defineOptions({
 })
 
 const props = withDefaults(defineProps<SelectProps>(), {
+  chevronClass: '',
   class: '',
   clearable: false,
   disabled: false,
@@ -75,9 +100,10 @@ const model = defineModel<string>({ default: '' })
 const { selectId, selectAttributes } = useSelectAttributes()
 
 const {
+  chevronClass,
   wrapperClass,
-  labelClasses,
-  selectClasses,
+  labelClass,
+  selectClass,
   validationMessageClass,
   helperMessageClass,
 } = useSelectClasses(toRefs(props))

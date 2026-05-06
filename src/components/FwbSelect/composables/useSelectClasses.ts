@@ -6,38 +6,32 @@ import type { FormElementSize } from '@/types/form'
 
 import { useMergeClasses } from '@/composables/useMergeClasses'
 
-// WRAPPER
 const defaultWrapperClasses = ''
+const defaultLabelClasses = 'block mb-2 font-medium text-gray-900 dark:text-white text-sm'
+const defaultHelperClasses = 'mt-2 text-gray-500 dark:text-gray-400 text-sm'
 
-// LABEL
-const defaultLabelClasses = 'block mb-2 text-sm font-medium'
-const defaultLabelTextClasses = 'text-gray-900 dark:text-white'
-const successTextClasses = 'text-green-700 dark:text-green-500'
-const errorTextClasses = 'text-red-700 dark:text-red-500'
-
-// SELECT
-const defaultSelectClasses = 'fwb-select w-full appearance-none text-gray-900 bg-gray-50 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500'
+const defaultSelectClasses = 'w-full appearance-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white shadow-xs focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-500 dark:focus:border-blue-500'
+const borderSelectClasses = 'border border-gray-300 dark:border-gray-600 rounded-lg'
+const underlineSelectClasses = 'bg-transparent dark:bg-transparent border-b-2 border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer'
 const disabledSelectClasses = 'cursor-not-allowed bg-gray-100'
-const borderSelectClasses = 'border border-gray-300 rounded-lg'
-const underlineSelectClasses = 'bg-transparent dark:bg-transparent dark:text-gray-500 border-b-2 border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer'
-
-const successSelectClasses = 'bg-green-50 border-green-500 dark:border-green-500 text-green-900 dark:text-green-400 placeholder-green-700 dark:placeholder-green-500 focus:ring-green-500 focus:border-green-500'
-const errorSelectClasses = 'bg-red-50 border-red-500 text-red-900 placeholder-red-700 focus:ring-red-500 focus:border-red-500 dark:text-red-500 dark:placeholder-red-500 dark:border-red-500'
 
 const selectSizeClasses: Record<FormElementSize, string> = {
-  sm: 'px-2.5 py-2 text-sm',
-  md: 'px-3 py-2.5 text-sm',
-  lg: 'px-3.5 py-3 text-base',
-  xl: 'px-4 py-3.5 text-base',
+  sm: 'pl-2.5 pr-8 py-2 text-sm',
+  md: 'pl-3 pr-8 py-2.5 text-sm',
+  lg: 'pl-3.5 pr-8 py-3 text-base',
+  xl: 'pl-4 pr-8 py-3.5 text-base',
 }
 
-const successUnderlineClasses = 'focus:border-green-500'
-const errorUnderlineClasses = 'focus:border-red-500'
+const errorSelectClasses = 'bg-red-50 border-rose-200 focus:ring-rose-500 focus:border-rose-500 dark:border-rose-500 dark:focus:ring-rose-500 text-rose-900 dark:text-rose-500'
+const errorTextClasses = 'text-rose-900 dark:text-rose-500'
+const successSelectClasses = 'bg-green-50 border-emerald-200 focus:ring-emerald-500 focus:border-emerald-500 dark:border-emerald-500 dark:focus:ring-emerald-500 text-emerald-900 dark:text-emerald-400'
+const successTextClasses = 'text-emerald-900 dark:text-emerald-500'
 
-// HELPER / VALIDATION
-const defaultHelperClasses = 'mt-2 text-sm text-gray-500 dark:text-gray-400'
+const errorUnderlineClasses = 'focus:border-rose-500'
+const successUnderlineClasses = 'focus:border-emerald-500'
 
 export type UseSelectClassesProps = {
+  chevronClass: Ref<string | Record<string, boolean>>
   class: Ref<string | Record<string, boolean>>
   disabled: Ref<boolean>
   labelClass: Ref<string | Record<string, boolean>>
@@ -48,9 +42,10 @@ export type UseSelectClassesProps = {
 }
 
 export function useSelectClasses (props: UseSelectClassesProps): {
+  chevronClass: Ref<string>
   helperMessageClass: Ref<string>
-  labelClasses: Ref<string>
-  selectClasses: Ref<string>
+  labelClass: Ref<string>
+  selectClass: Ref<string>
   validationMessageClass: Ref<string>
   wrapperClass: Ref<string>
 } {
@@ -59,19 +54,17 @@ export function useSelectClasses (props: UseSelectClassesProps): {
     props.wrapperClass.value,
   ]))
 
-  const labelClasses = computed(() => {
-    const vs = props.validationStatus.value
-    return useMergeClasses([
-      defaultLabelClasses,
-      defaultLabelTextClasses,
-      vs === validationStatusMap.Success
-        ? successTextClasses
-        : vs === validationStatusMap.Error ? errorTextClasses : '',
-      props.labelClass.value,
-    ])
-  })
+  const labelClass = computed(() => useMergeClasses([
+    defaultLabelClasses,
+    props.validationStatus.value === validationStatusMap.Success
+      ? successTextClasses
+      : props.validationStatus.value === validationStatusMap.Error
+        ? errorTextClasses
+        : '',
+    props.labelClass.value,
+  ]))
 
-  const selectClasses = computed(() => {
+  const selectClass = computed(() => {
     const vs = props.validationStatus.value
     const classByStatus = vs === validationStatusMap.Success
       ? successSelectClasses
@@ -82,11 +75,11 @@ export function useSelectClasses (props: UseSelectClassesProps): {
 
     return useMergeClasses([
       defaultSelectClasses,
-      classByStatus,
       selectSizeClasses[props.size.value],
-      props.disabled.value ? disabledSelectClasses : '',
       props.underline.value ? underlineSelectClasses : borderSelectClasses,
+      classByStatus,
       props.underline.value ? underlineByStatus : '',
+      props.disabled.value ? disabledSelectClasses : '',
       props.class.value,
     ])
   })
@@ -95,17 +88,32 @@ export function useSelectClasses (props: UseSelectClassesProps): {
     defaultHelperClasses,
     props.validationStatus.value === validationStatusMap.Success
       ? successTextClasses
-      : props.validationStatus.value === validationStatusMap.Error ? errorTextClasses : '',
+      : props.validationStatus.value === validationStatusMap.Error
+        ? errorTextClasses
+        : '',
   ]))
+
+  const chevronClass = computed(() => {
+    const stateClass = props.disabled.value
+      ? 'text-gray-400 dark:text-gray-500'
+      : props.validationStatus.value === validationStatusMap.Success
+        ? successTextClasses
+        : props.validationStatus.value === validationStatusMap.Error
+          ? errorTextClasses
+          : 'text-gray-900 dark:text-white'
+
+    return useMergeClasses([stateClass, props.chevronClass.value])
+  })
 
   const helperMessageClass = computed(() => useMergeClasses([
     defaultHelperClasses,
   ]))
 
   return {
+    chevronClass,
     helperMessageClass,
-    labelClasses,
-    selectClasses,
+    labelClass,
+    selectClass,
     validationMessageClass,
     wrapperClass,
   }
