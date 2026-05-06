@@ -2,6 +2,7 @@
 import FwbFileInputExample from './fileInput/examples/FwbFileInputExample.vue'
 import FwbFileInputExampleHelper from './fileInput/examples/FwbFileInputExampleHelper.vue'
 import FwbFileInputExampleSize from './fileInput/examples/FwbFileInputExampleSize.vue'
+import FwbFileInputExampleStyling from './fileInput/examples/FwbFileInputExampleStyling.vue'
 import FwbFileInputExampleDropZone from './fileInput/examples/FwbFileInputExampleDropZone.vue'
 import FwbFileInputExampleDropZonePlaceholder from './fileInput/examples/FwbFileInputExampleDropZonePlaceholder.vue'
 import FwbFileInputExampleDropZoneMultiple from './fileInput/examples/FwbFileInputExampleDropZoneMultiple.vue'
@@ -40,7 +41,7 @@ const file = ref(null)
 <template>
   <fwb-file-input v-model="files" label="Upload file" multiple />
   <div v-if="files.length !== 0" class="mt-4 border border-gray-300 dark:border-gray-600 p-2 rounded-md">
-    <div v-for="file in files" :key="file">
+    <div v-for="file in files" :key="file.lastModified">
       {{ file.name }}
     </div>
   </div>
@@ -55,15 +56,15 @@ const files = ref([])
 ```
 
 
-## Helper text
+## Slot - Helper
 
 <fwb-file-input-example-helper />
 ```vue
 <template>
   <fwb-file-input v-model="file" label="Upload file">
-    <p class="mt-1! text-sm text-gray-500 dark:text-gray-300">
+    <template #helper>
       SVG, PNG, JPG or GIF (MAX. 800x400px).
-    </p>
+    </template>
   </fwb-file-input>
 </template>
 
@@ -81,9 +82,35 @@ const file = ref(null)
 <fwb-file-input-example-size />
 ```vue
 <template>
-  <fwb-file-input v-model="file" label="Small size" size="xs" />
-  <fwb-file-input v-model="file" label="Default size" size="sm" />
+  <fwb-file-input v-model="file" label="Small size" size="sm" />
+  <fwb-file-input v-model="file" label="Default size" size="md" />
   <fwb-file-input v-model="file" label="Large size" size="lg" />
+  <fwb-file-input v-model="file" label="Extra large size" size="xl" />
+</template>
+
+<script setup>
+import { ref } from 'vue'
+import { FwbFileInput } from 'flowbite-vue'
+
+const file = ref(null)
+</script>
+```
+
+
+## Styling File Inputs
+
+Use dedicated props to pass classes to individual elements. Use `file:` variants inside `class` to style the file selector button.
+
+<fwb-file-input-example-styling />
+```vue
+<template>
+  <fwb-file-input
+    v-model="file"
+    class="border-gray-900 rounded-none file:bg-gray-900 file:text-white hover:file:bg-gray-700"
+    label="Upload file"
+    label-class="text-center text-gray-900 dark:text-gray-200"
+    wrapper-class="bg-gray-100 dark:bg-gray-800 p-2"
+  />
 </template>
 
 <script setup>
@@ -148,7 +175,17 @@ const file = ref(null)
 import { ref } from 'vue'
 import { FwbFileInput } from 'flowbite-vue'
 
-const file = ref(null)
 const files = ref([])
 </script>
 ```
+
+## FileInput component API
+
+### FwbFileInput Props
+
+| Name             | Type                     | Default   | Description                                                                                      |
+|------------------|--------------------------|-----------|--------------------------------------------------------------------------------------------------|
+| wrapperClass     | String \| Object         | `''`      | Added to main component wrapper.                                                                 |
+| labelClass       | String \| Object         | `''`      | Added to `<label>` element.                                                                      |
+| class            | String \| Object         | `''`      | Added to `<input type="file">` element. Use `file:` variants to style the file selector button.  |
+| validationStatus | `'success'` \| `'error'` | undefined | Sets the validation state of the input.                                                          |

@@ -1,33 +1,47 @@
 <template>
   <div
     v-if="!dropzone"
-    v-bind="$attrs"
+    :class="wrapperClass"
   >
-    <label>
-      <span :class="labelClasses">{{ label }}</span>
-      <input
-        :accept="accept"
-        :class="fileInpClasses"
-        :multiple="multiple"
-        type="file"
-        @change="handleChange"
-      >
-    </label>
-    <slot />
+    <label
+      v-if="label"
+      :for="inputId"
+      :class="labelClass"
+    >{{ label }}</label>
+    <input
+      v-bind="inputAttributes"
+      :accept="accept"
+      :class="inputClass"
+      :disabled="disabled"
+      :multiple="multiple"
+      type="file"
+      @change="handleChange"
+    >
+    <p
+      v-if="$slots.validationMessage"
+      :class="validationMessageClass"
+    >
+      <slot name="validationMessage" />
+    </p>
+    <p
+      v-if="$slots.helper"
+      :class="helperMessageClass"
+    >
+      <slot name="helper" />
+    </p>
   </div>
   <div
     v-else
-    v-bind="$attrs"
     class="flex flex-col justify-center items-center"
     @dragover="dragOverHandler"
     @drop="dropFileHandler"
   >
     <span
-      v-if="label !== ''"
-      :class="labelClasses"
+      v-if="label"
+      :class="labelClass"
     >{{ label }}</span>
-    <label :class="dropzoneLabelClasses">
-      <div :class="dropzoneWrapClasses">
+    <label :class="dropzoneLabelClass">
+      <div :class="dropzoneWrapClass">
         <svg
           aria-hidden="true"
           class="size-8 text-gray-500 dark:text-gray-400"
@@ -43,8 +57,8 @@
             stroke="currentColor"
           />
         </svg>
-        <div v-if="(!model || (Array.isArray(model) && model.length === 0))">
-          <p :class="dropzoneTextClasses">
+        <div v-if="!model || (Array.isArray(model) && model.length === 0)">
+          <p :class="dropzoneTextClass">
             <slot name="dropzonePlaceholder">
               <span class="font-semibold">Click to upload</span>
               or drag and drop
@@ -55,7 +69,9 @@
         <p
           v-else
           class="text-center"
-        >File: {{ dropZoneText }}</p>
+        >
+          File: {{ dropZoneText }}
+        </p>
       </div>
       <input
         :accept="accept"
@@ -70,54 +86,52 @@
 
 <script setup lang="ts">
 import { isArray } from 'lodash-es'
-import { computed } from 'vue'
+import { computed, toRefs } from 'vue'
 
+import { useElementAttributes } from '@/composables/useElementAttributes'
 import { useFileInputClasses } from './composables/useFileInputClasses'
 
-import type { FormElementSize } from '@/types/form'
+import type { FormElementSize, ValidationStatus } from '@/types/form'
 
 defineOptions({ inheritAttrs: false })
 
 interface FileInputProps {
   accept?: string
+  class?: string | Record<string, boolean>
+  disabled?: boolean
   dropzone?: boolean
   label?: string
-  modelValue?: File | File[] | null
+  labelClass?: string | Record<string, boolean>
   multiple?: boolean
   size?: FormElementSize
+  validationStatus?: ValidationStatus
+  wrapperClass?: string | Record<string, boolean>
 }
 
 const props = withDefaults(defineProps<FileInputProps>(), {
   accept: '',
+  class: '',
+  disabled: false,
   dropzone: false,
   label: '',
-  modelValue: null,
+  labelClass: '',
   multiple: false,
-  size: 'sm',
+  size: 'md',
+  validationStatus: undefined,
+  wrapperClass: '',
 })
+
+const model = defineModel<File | File[] | null>({ default: null })
 
 const dropZoneText = computed(() => {
-  if (isArray(props.modelValue)) {
-    return props.modelValue.map(el => el.name).join(', ')
-  } else if (props.modelValue instanceof FileList) {
-    return Array.from(props.modelValue)
-      .map(el => el.name)
-      .join(',')
-  } else if (props.modelValue instanceof File) {
-    return props.modelValue.name || ''
+  if (isArray(model.value)) {
+    return model.value.map(el => el.name).join(', ')
+  } else if (model.value instanceof FileList) {
+    return Array.from(model.value).map(el => el.name).join(', ')
+  } else if (model.value instanceof File) {
+    return model.value.name || ''
   }
-
   return ''
-})
-
-const emit = defineEmits(['update:modelValue'])
-const model = computed({
-  get () {
-    return props.modelValue
-  },
-  set (val) {
-    emit('update:modelValue', val)
-  },
 })
 
 const handleChange = (event: Event) => {
@@ -138,29 +152,22 @@ const dropFileHandler = (event: DragEvent) => {
   event.preventDefault()
   const arr: File[] = []
   if (event.dataTransfer?.items) {
-    Object.values(event.dataTransfer.items)
-      .forEach((item: DataTransferItem) => {
-        if (item.kind === 'file') {
-          arr.push(item.getAsFile() as File)
-        }
-      })
+    Object.values(event.dataTransfer.items).forEach((item: DataTransferItem) => {
+      if (item.kind === 'file') arr.push(item.getAsFile() as File)
+    })
     if (props.multiple) {
-      if (Array.isArray(model.value) && model.value.length > 0) {
-        model.value = [...model.value, ...arr]
-      } else {
-        model.value = arr
-      }
+      model.value = Array.isArray(model.value) && model.value.length > 0
+        ? [...model.value, ...arr]
+        : arr
     } else {
       model.value = arr[0] || null
     }
   } else if (event.dataTransfer?.files) {
     const files = Array.from(event.dataTransfer.files)
     if (props.multiple) {
-      if (Array.isArray(model.value) && model.value.length > 0) {
-        model.value = [...model.value, ...files]
-      } else {
-        model.value = files
-      }
+      model.value = Array.isArray(model.value) && model.value.length > 0
+        ? [...model.value, ...files]
+        : files
     } else {
       model.value = files[0] || null
     }
@@ -171,11 +178,16 @@ const dragOverHandler = (event: Event) => {
   event.preventDefault()
 }
 
+const { elementId: inputId, elementAttributes: inputAttributes } = useElementAttributes()
+
 const {
-  dropzoneLabelClasses,
-  dropzoneTextClasses,
-  dropzoneWrapClasses,
-  fileInpClasses,
-  labelClasses,
-} = useFileInputClasses(props)
+  dropzoneLabelClass,
+  dropzoneTextClass,
+  dropzoneWrapClass,
+  helperMessageClass,
+  inputClass,
+  labelClass,
+  validationMessageClass,
+  wrapperClass,
+} = useFileInputClasses(toRefs(props))
 </script>
