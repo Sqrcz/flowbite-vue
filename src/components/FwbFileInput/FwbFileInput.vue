@@ -88,10 +88,11 @@
 import { isArray } from 'lodash-es'
 import { computed, toRefs } from 'vue'
 
-import { useElementAttributes } from '@/composables/useElementAttributes'
 import { useFileInputClasses } from './composables/useFileInputClasses'
 
 import type { FormElementSize, ValidationStatus } from '@/types/form'
+
+import { useElementAttributes } from '@/composables/useElementAttributes'
 
 defineOptions({ inheritAttrs: false })
 
