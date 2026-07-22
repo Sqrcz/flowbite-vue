@@ -52,6 +52,22 @@ const vueConfig = [
   },
 ]
 
+const nuxtFixtureConfig = [
+  {
+    // The fixture app under test exercises flowbite-vue/nuxt's real
+    // auto-imports (components and composables) with no local
+    // import/declaration, by design — the whole point of the module under
+    // test. ESLint has no visibility into Nuxt's generated auto-import
+    // registry, so its globals are declared here instead.
+    files: ['src/nuxt/test/fixture/**/*.vue'],
+    languageOptions: {
+      globals: {
+        useFwbToast: 'readonly',
+      },
+    },
+  },
+]
+
 const vueScopedCssConfig = [
   ...pluginVueScopedCss.configs['flat/recommended'],
   {
@@ -165,6 +181,7 @@ const typeScriptConfig = [
 export default [
   ...baseConfig,
   ...vueConfig,
+  ...nuxtFixtureConfig,
   ...vueScopedCssConfig,
   ...standardConfig,
   ...stylisticConfig,

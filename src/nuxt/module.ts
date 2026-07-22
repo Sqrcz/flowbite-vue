@@ -1,4 +1,4 @@
-import { addComponent, createResolver, defineNuxtModule } from '@nuxt/kit'
+import { addComponent, addImports, createResolver, defineNuxtModule } from '@nuxt/kit'
 
 import { nuxtComponents } from './generated-components'
 
@@ -25,6 +25,17 @@ export default defineNuxtModule({
       })
     }
 
-    // Composable/CSS registration land in follow-up tickets.
+    // Aliased to `useFwbToast`, not the library's own `useToast` name: a
+    // global auto-import named `useToast` would collide with the same-named
+    // composable other ecosystem libraries ship (e.g. Nuxt UI's). The
+    // library's own export stays `useToast` so existing manual
+    // `import { useToast } from 'flowbite-vue'` call sites are unaffected.
+    addImports({
+      name: 'useToast',
+      as: 'useFwbToast',
+      from: resolver.resolve('./composables.js'),
+    })
+
+    // CSS registration lands in a follow-up ticket.
   },
 })

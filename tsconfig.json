@@ -21,6 +21,7 @@
     "node_modules",
     "**/node_modules",
     "docs",
-    "dist"
+    "dist",
+    "src/nuxt/test/fixture"
   ]
 }

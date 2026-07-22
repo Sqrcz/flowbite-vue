@@ -51,6 +51,7 @@ export default defineConfig({
     lib: {
       entry: {
         nuxt: resolve(__dirname, './src/nuxt/module.ts'),
+        composables: resolve(__dirname, './src/composables.ts'),
         ...componentEntries,
       },
       formats: ['es', 'cjs'],
