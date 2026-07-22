@@ -8,6 +8,10 @@ dist_types
 dist-ssr
 *.local
 
+# Nuxt (fixture app used by the nuxt-module test suite)
+.nuxt
+.output
+
 # Rollup Bundle Visualizer
 stats.html
 
