@@ -1,22 +1,71 @@
 import { resolve } from 'path'
 
+import vue from '@vitejs/plugin-vue'
 import { defineConfig } from 'vite'
 
-// Separate build for the Nuxt module entry point: it runs in Node during the
-// consumer's own Nuxt build, so it needs `es`/`cjs` output only, never the
-// browser-global `umd` format the main `./vite.config.ts` build produces.
+import { nuxtComponents } from './src/nuxt/generated-components'
+
+// Separate build for the Nuxt module + one lib entry per component: this all
+// runs in Node (module.ts) or is dynamically imported by the consumer's own
+// Vite build (the component chunks), so it needs `es`/`cjs` output only,
+// never the browser-global `umd` format the main `./vite.config.ts` build
+// produces (which also can't coexist with multiple lib entries in the first
+// place — Rollup requires a single entry for umd/iife).
+//
+// Each component gets its own lib entry (not just `module.ts`) so Rollup
+// gives it its own output chunk under dist/components/ — genuine
+// per-component code splitting for Nuxt's `addComponent`, with code shared
+// between components (composables, etc.) automatically split into its own
+// shared chunk(s) rather than duplicated per component.
+const componentEntries = Object.fromEntries(
+  nuxtComponents.map(({ name, filePath }) => [`components/${name}`, resolve(__dirname, `src/${filePath}`)]),
+)
+
+// A few component .vue files have <style> blocks; this build has no
+// tailwindcss() plugin (only the main ./vite.config.ts build needs one, to
+// produce dist/index.css — see ticket 13), so any CSS emitted here would
+// contain un-expanded `@apply` rules. Drop it: consumers get styles from the
+// already-correctly-built dist/index.css, and Vue's scopeId hashing is
+// derived from each file's path, so the scoped styles compiled by the main
+// build still apply correctly to the component chunks built here.
+function dropEmittedCss () {
+  return {
+    name: 'drop-emitted-css',
+    enforce: 'post' as const,
+    generateBundle (_options: unknown, bundle: Record<string, { type: string }>) {
+      for (const fileName of Object.keys(bundle)) {
+        if (fileName.endsWith('.css')) Reflect.deleteProperty(bundle, fileName)
+      }
+    },
+  }
+}
+
 export default defineConfig({
+  plugins: [vue(), dropEmittedCss()],
   build: {
     target: 'esnext',
     emptyOutDir: false,
+    // Discarded by dropEmittedCss() below; skip minifying it too, since
+    // lightningcss otherwise warns on unexpanded `@apply` rules for no benefit.
+    cssMinify: false,
     lib: {
-      entry: resolve(__dirname, './src/nuxt/module.ts'),
-      name: 'flowbite-vue-nuxt',
+      entry: {
+        nuxt: resolve(__dirname, './src/nuxt/module.ts'),
+        ...componentEntries,
+      },
       formats: ['es', 'cjs'],
-      fileName: 'nuxt',
     },
     rollupOptions: {
-      external: ['vue', '@nuxt/kit'],
+      external: [
+        'vue',
+        '@nuxt/kit',
+        '@vueuse/core',
+        /^@vueuse\/integrations/,
+        'floating-vue',
+        'lodash-es',
+        'nanoid',
+        'tailwind-merge',
+      ],
     },
   },
 })
