@@ -2,12 +2,25 @@ import { addComponent, addImports, createResolver, defineNuxtModule } from '@nux
 
 import { nuxtComponents } from './generated-components'
 
-export default defineNuxtModule({
+export interface ModuleOptions {
+  /**
+   * Auto-inject flowbite-vue's prebuilt stylesheet into the Nuxt app.
+   * Set to `false` if you need control over stylesheet load order (e.g. to
+   * resolve a Tailwind CSS cascade-layer conflict with your own app's styles).
+   * @default true
+   */
+  css?: boolean
+}
+
+export default defineNuxtModule<ModuleOptions>({
   meta: {
     name: 'flowbite-vue',
     configKey: 'flowbiteVue',
   },
-  setup () {
+  defaults: {
+    css: true,
+  },
+  setup (options, nuxt) {
     const resolver = createResolver(import.meta.url)
 
     for (const { name, filePath: sourcePath } of nuxtComponents) {
@@ -36,6 +49,16 @@ export default defineNuxtModule({
       from: resolver.resolve('./composables.js'),
     })
 
-    // CSS registration lands in a follow-up ticket.
+    // No Tailwind Vite-plugin composition here: flowbite-vue's own build
+    // already ran `@tailwindcss/vite` at publish time (see `vite.config.ts`),
+    // producing a fully compiled `dist/index.css` with nothing left for a
+    // second Tailwind pass to (re)process. `resolver.resolve` (rather than a
+    // bare `'flowbite-vue/index.css'` specifier) resolves relative to this
+    // module's own file location at runtime, so it finds the sibling
+    // `dist/index.css` correctly whether loaded from a published
+    // node_modules install or a local/linked dev checkout.
+    if (options.css) {
+      nuxt.options.css.push(resolver.resolve('./index.css'))
+    }
   },
 })

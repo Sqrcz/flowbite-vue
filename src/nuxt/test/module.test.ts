@@ -66,4 +66,10 @@ describe('flowbite-vue/nuxt', async () => {
     expect(imports).toContain('useFwbToast')
     expect(imports).not.toMatch(/\b(?:const|readonly) useToast\b/)
   })
+
+  it('auto-injects flowbite-vue\'s stylesheet by default, with no manual CSS import', async () => {
+    const html = await $fetch('/')
+
+    expect(html).toMatch(/<link rel="stylesheet"[^>]*dist\/index\.css/)
+  })
 })
