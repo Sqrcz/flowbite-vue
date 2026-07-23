@@ -72,3 +72,18 @@ jobs:
           cache: 'npm'
       - run: npm i
       - run: npm run build:types
+  test-nuxt:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        nuxt-version: [3, 4] # bump when a new Nuxt major ships
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: 'npm'
+      - run: npm i
+      - run: npm i nuxt@${{ matrix.nuxt-version }}
+      - run: npm run test:nuxt
