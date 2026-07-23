@@ -11,6 +11,10 @@ Flowbite is a library of components built on top of the utility-classes from Tai
 <br>
 
 ::: info
+Using Nuxt? Flowbite Vue ships a dedicated module with component/composable auto-import and auto-injected styles — see the [Nuxt guide](/pages/nuxt).
+:::
+
+::: info
 Make sure that you have [Node.js](https://nodejs.org/en/) installed. Flowbite Vue requires version 18 or newer.
 ```bash
 node -v
