@@ -17,7 +17,7 @@ versions predate this file and are not backfilled.
 ### Added
 
 - `FwbKbd` component for rendering keyboard key labels, standalone, composed inline with `+`, inside a table cell, or with an `icon` slot for directional keys
-- Nuxt module (`flowbite-vue/nuxt`) for auto-imported components and composables — see the Nuxt guide (#PR)
+- Nuxt module (`flowbite-vue/nuxt`) for auto-imported components and composables — see the Nuxt guide
 
 ## [0.3.0] - 2026-07-12
 
