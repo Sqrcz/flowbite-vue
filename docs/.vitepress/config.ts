@@ -6,6 +6,7 @@ function buildSidebar () {
       items: [
         { text: 'Home', link: '/' },
         { text: 'Quickstart', link: '/pages/getting-started' },
+        { text: 'Nuxt', link: '/pages/nuxt' },
       ],
     },
     {

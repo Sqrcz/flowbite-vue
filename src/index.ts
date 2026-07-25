@@ -1,3 +1,5 @@
+import './style.css'
+
 export { default as FwbAccordion } from '@/components/FwbAccordion/FwbAccordion.vue'
 export { default as FwbAccordionContent } from '@/components/FwbAccordion/FwbAccordionContent.vue'
 export { default as FwbAccordionHeader } from '@/components/FwbAccordion/FwbAccordionHeader.vue'

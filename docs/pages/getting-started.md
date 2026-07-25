@@ -11,6 +11,10 @@ Flowbite is a library of components built on top of the utility-classes from Tai
 <br>
 
 ::: info
+Using Nuxt? Flowbite Vue ships a dedicated module with component/composable auto-import and auto-injected styles — see the [Nuxt guide](/pages/nuxt).
+:::
+
+::: info
 Make sure that you have [Node.js](https://nodejs.org/en/) installed. Flowbite Vue requires version 18 or newer.
 ```bash
 node -v
@@ -78,12 +82,9 @@ npm i flowbite flowbite-vue
 
 /* import Flowbite plugin */
 @plugin "flowbite/plugin";
-
-/* add Flowbite Vue directory using @source directive. */
-@source "../node_modules/flowbite-vue";
 ```
 
-Make sure to update the relative path prefix (`../`) for the `@source` directive to your case.
+`flowbite-vue/index.css` is a prebuilt, self-contained stylesheet — it already includes every utility class Flowbite Vue's components use, so there's no need to add a `@source` directive pointing at `node_modules/flowbite-vue`.
 
 4. Now you can use **Flowbite Vue** anywhere in your project and build awesome interfaces:
 

@@ -1,0 +1,77 @@
+import { addComponent, addImports, createResolver, defineNuxtModule, type Resolver } from '@nuxt/kit'
+
+import { nuxtComponents } from './generated-components'
+
+import type { Nuxt } from '@nuxt/schema'
+
+export interface ModuleOptions {
+  /**
+   * Auto-inject flowbite-vue's prebuilt stylesheet into the Nuxt app.
+   * Set to `false` if you need control over stylesheet load order (e.g. to
+   * resolve a Tailwind CSS cascade-layer conflict with your own app's styles).
+   * @default true
+   */
+  css?: boolean
+}
+
+function registerComponents (resolver: Resolver) {
+  for (const { name, filePath: sourcePath } of nuxtComponents) {
+    addComponent({
+      name,
+      // Each component's own built chunk (`vite.nuxt.config.ts` gives every
+      // component its own lib entry), not raw `src/*.vue`: raw source uses
+      // flowbite-vue's own internal `@/...` path alias, which has no
+      // meaning in a consumer's Vite config and would collide with Nuxt's
+      // own `@` (srcDir) alias if injected globally. The built chunk
+      // already has that alias resolved, and gives Nuxt a genuinely
+      // separate lazy-loaded module per component.
+      filePath: resolver.resolve(`./components/${name}.js`),
+      declarationPath: resolver.resolve(`../src/${sourcePath}`),
+    })
+  }
+}
+
+function registerToastImport (resolver: Resolver) {
+  // Aliased to `useFwbToast`, not the library's own `useToast` name: a
+  // global auto-import named `useToast` would collide with the same-named
+  // composable other ecosystem libraries ship (e.g. Nuxt UI's). The
+  // library's own export stays `useToast` so existing manual
+  // `import { useToast } from 'flowbite-vue'` call sites are unaffected.
+  addImports({
+    name: 'useToast',
+    as: 'useFwbToast',
+    from: resolver.resolve('./composables.js'),
+  })
+}
+
+function injectCss (resolver: Resolver, nuxt: Nuxt) {
+  // No Tailwind Vite-plugin composition here: flowbite-vue's own build
+  // already ran `@tailwindcss/vite` at publish time (see `vite.config.ts`),
+  // producing a fully compiled `dist/index.css` with nothing left for a
+  // second Tailwind pass to (re)process. `resolver.resolve` (rather than a
+  // bare `'flowbite-vue/index.css'` specifier) resolves relative to this
+  // module's own file location at runtime, so it finds the sibling
+  // `dist/index.css` correctly whether loaded from a published
+  // node_modules install or a local/linked dev checkout.
+  nuxt.options.css.push(resolver.resolve('./index.css'))
+}
+
+export default defineNuxtModule<ModuleOptions>({
+  meta: {
+    name: 'flowbite-vue',
+    configKey: 'flowbiteVue',
+  },
+  defaults: {
+    css: true,
+  },
+  setup (options, nuxt) {
+    const resolver = createResolver(import.meta.url)
+
+    registerComponents(resolver)
+    registerToastImport(resolver)
+
+    if (options.css) {
+      injectCss(resolver, nuxt)
+    }
+  },
+})
