@@ -46,7 +46,7 @@ That's it — components are ready to use anywhere in your app with no import st
 
 The module auto-injects Flowbite Vue's prebuilt stylesheet into your Nuxt app, so no `@import "flowbite-vue/index.css"` is needed either.
 
-If you need control over stylesheet load order (for example to resolve a Tailwind CSS cascade-layer conflict with your own app's styles), opt out via the `flowbiteVue` config key and import the stylesheet yourself:
+If you need control over stylesheet load order (for example to resolve a Tailwind CSS cascade-layer conflict with your own app's styles), opt out via the `flowbiteVue` config key and import the stylesheet yourself through Nuxt's own `css` array — order it relative to your own styles as needed:
 
 ::: code-group
 
@@ -56,6 +56,10 @@ export default defineNuxtConfig({
   flowbiteVue: {
     css: false,
   },
+  css: [
+    'flowbite-vue/index.css',
+    '~/assets/css/main.css',
+  ],
 })
 ```
 

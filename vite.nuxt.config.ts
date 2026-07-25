@@ -7,10 +7,15 @@ import { nuxtComponents } from './src/nuxt/generated-components'
 
 // Separate build for the Nuxt module + one lib entry per component: this all
 // runs in Node (module.ts) or is dynamically imported by the consumer's own
-// Vite build (the component chunks), so it needs `es`/`cjs` output only,
-// never the browser-global `umd` format the main `./vite.config.ts` build
-// produces (which also can't coexist with multiple lib entries in the first
-// place — Rollup requires a single entry for umd/iife).
+// Vite build (the component chunks), so it needs `es` output only — never the
+// browser-global `umd` format the main `./vite.config.ts` build produces
+// (which also can't coexist with multiple lib entries in the first place —
+// Rollup requires a single entry for umd/iife). No `cjs` output either:
+// `@nuxt/kit` ships ESM-only (no `require` condition in its own `exports`
+// map at all), so a `require()`'d `.cjs` build of this module would depend on
+// Node's native require(esm) interop rather than a real CJS build of its own
+// dependency — fragile, and unnecessary since Nuxt itself only ever loads
+// modules via ESM `import()`.
 //
 // Each component gets its own lib entry (not just `module.ts`) so Rollup
 // gives it its own output chunk under dist/components/ — genuine
@@ -54,7 +59,7 @@ export default defineConfig({
         composables: resolve(__dirname, './src/composables.ts'),
         ...componentEntries,
       },
-      formats: ['es', 'cjs'],
+      formats: ['es'],
     },
     rollupOptions: {
       external: [

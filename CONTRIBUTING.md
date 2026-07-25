@@ -35,7 +35,7 @@ This project keeps a [`CHANGELOG.md`](CHANGELOG.md) following [Keep a Changelog]
 
 - Pick the right category: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, or `Security`.
 - If your change breaks existing usage — a removed or renamed prop/event, a changed default, a different attribute-forwarding target, etc. — add it under the `⚠ Breaking Changes` section instead, with enough detail for someone upgrading to know what to check or update.
-- End each bullet with a link to your PR number, e.g. `(#123)`. Since GitHub only assigns that number once your PR is open, don't hold up the changelog bullet waiting for it — add the bullet without a number in your feature PR, and the `(#123)` link gets filled in later, in the version-bump/release PR that cuts the actual release.
+- Each bullet ends with a link to its PR number, e.g. `(#123)` — but not immediately. GitHub only assigns that number once the PR is open, so don't hold up the changelog bullet waiting for it: add it without a number in your feature PR. The `(#123)` link is filled in later, in the version-bump/release PR that cuts the actual release — every bullet must have its link by the time that release PR is merged.
 - Keep entries user-facing: describe what changed for someone consuming the library, not internal refactor details.
 
 ## Where can I go for help?
