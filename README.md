@@ -80,6 +80,8 @@ module.exports = {
 };
 ```
 
+Using Nuxt? See the [Nuxt guide](docs/pages/nuxt.md) for auto-import setup.
+
 ## Components
 
 <table>
