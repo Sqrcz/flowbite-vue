@@ -10,6 +10,10 @@ versions predate this file and are not backfilled.
 
 ## [Unreleased]
 
+### Fixed
+
+- Published `flowbite-vue/index.css` was missing nearly all component utility classes — `src/style.css` was never pulled into the library's build graph, so Tailwind's build-time scanner never reached `src/components`. Consumers following the quickstart guide were unknowingly relying on their own project's `@source` directive to backfill the missing classes. `src/index.ts` now imports `src/style.css` directly and `@source './components'` was added so the shipped stylesheet is fully self-contained; the quickstart docs no longer need a `@source "../node_modules/flowbite-vue"` workaround.
+
 ### Added
 
 - `FwbKbd` component for rendering keyboard key labels, standalone, composed inline with `+`, inside a table cell, or with an `icon` slot for directional keys

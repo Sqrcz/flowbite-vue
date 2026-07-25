@@ -82,12 +82,9 @@ npm i flowbite flowbite-vue
 
 /* import Flowbite plugin */
 @plugin "flowbite/plugin";
-
-/* add Flowbite Vue directory using @source directive. */
-@source "../node_modules/flowbite-vue";
 ```
 
-Make sure to update the relative path prefix (`../`) for the `@source` directive to your case.
+`flowbite-vue/index.css` is a prebuilt, self-contained stylesheet — it already includes every utility class Flowbite Vue's components use, so there's no need to add a `@source` directive pointing at `node_modules/flowbite-vue`.
 
 4. Now you can use **Flowbite Vue** anywhere in your project and build awesome interfaces:
 
