@@ -10,14 +10,16 @@ versions predate this file and are not backfilled.
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-07-26
+
 ### Fixed
 
-- Published `flowbite-vue/index.css` was missing nearly all component utility classes — `src/style.css` was never pulled into the library's build graph, so Tailwind's build-time scanner never reached `src/components`. Consumers following the quickstart guide were unknowingly relying on their own project's `@source` directive to backfill the missing classes. `src/index.ts` now imports `src/style.css` directly and `@source './components'` was added so the shipped stylesheet is fully self-contained; the quickstart docs no longer need a `@source "../node_modules/flowbite-vue"` workaround.
+- Published `flowbite-vue/index.css` was missing nearly all component utility classes — `src/style.css` was never pulled into the library's build graph, so Tailwind's build-time scanner never reached `src/components`. Consumers following the quickstart guide were unknowingly relying on their own project's `@source` directive to backfill the missing classes. `src/index.ts` now imports `src/style.css` directly and `@source './components'` was added so the shipped stylesheet is fully self-contained; the quickstart docs no longer need a `@source "../node_modules/flowbite-vue"` workaround (#460)
 
 ### Added
 
-- `FwbKbd` component for rendering keyboard key labels, standalone, composed inline with `+`, inside a table cell, or with an `icon` slot for directional keys
-- Nuxt module (`flowbite-vue/nuxt`) for auto-imported components and composables — see the Nuxt guide
+- `FwbKbd` component for rendering keyboard key labels, standalone, composed inline with `+`, inside a table cell, or with an `icon` slot for directional keys (#459)
+- Nuxt module (`flowbite-vue/nuxt`) for auto-imported components and composables — see the Nuxt guide (#460)
 
 ## [0.3.0] - 2026-07-12
 
@@ -64,5 +66,6 @@ versions predate this file and are not backfilled.
 - `FwbFileInput`: the file selector button had `file:rounded-none` while the input wrapper has `rounded-lg` — the button's square corner was clipped by the input's rounded border box, cutting into the button text. Now rounds the button's left corners to match, and widens left padding accordingly (#455)
 - `FwbProgress`: the inner bar's left corner squared off (lost its `rounded-full`) at small `progress` values, and the inside value label was nearly invisible at small values, especially in light theme. The outer track now clips the inner bar with `overflow-hidden` so corners always stay rounded, and the inner bar clips its own value text instead of letting it spill onto the track; the value is also skipped entirely at `progress={0}` (#457)
 
-[Unreleased]: https://github.com/themesberg/flowbite-vue/compare/v0.3.0...main
+[Unreleased]: https://github.com/themesberg/flowbite-vue/compare/v0.4.0...main
+[0.4.0]: https://github.com/themesberg/flowbite-vue/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/themesberg/flowbite-vue/compare/v0.2.3...v0.3.0
