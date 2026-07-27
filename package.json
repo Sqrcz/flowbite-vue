@@ -52,7 +52,7 @@
     "prepublishOnly": "npm run build",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs && cp -r ./docs/assets/* ./docs/.vitepress/dist/assets/",
-    "docs:preview": "vitepress serve docs --port $PORT",
+    "docs:preview": "vitepress serve docs ${PORT:+--port $PORT}",
     "generate:nuxt-components": "node scripts/generate-nuxt-components.mjs",
     "prebuild:package": "npm run generate:nuxt-components",
     "build:package": "vite build && vite build --config vite.nuxt.config.ts",
