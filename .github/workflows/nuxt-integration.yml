@@ -1,0 +1,40 @@
+name: Nuxt integration
+
+on:
+  pull_request:
+    branches: ['main']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: '${{ github.workflow }}-${{ github.ref }}'
+  cancel-in-progress: true
+
+jobs:
+  test-nuxt:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        nuxt-version: [3, 4] # bump when a new Nuxt major ships
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Use Node.js 24.x
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.x
+          cache: 'npm'
+      # Set the matrix's Nuxt version before the (only) install, rather than
+      # `npm i` followed by a second `npm i nuxt@X` on top of it: swapping a
+      # dependency this large in an already-installed tree makes npm's
+      # arborist retire and replace most of node_modules in one reify call,
+      # which reliably triggers a long-standing, still-open npm bug where the
+      # rollback path itself crashes (npm/cli#4907, ERR_INVALID_ARG_TYPE /
+      # "from" argument must be of type string) — seen consistently on this
+      # job's `nuxt-version: 3` cell. A single-shot install never enters that
+      # rollback path.
+      - run: npm pkg set devDependencies.nuxt="^${{ matrix.nuxt-version }}"
+      - run: npm i
+      - run: npm run test:nuxt
