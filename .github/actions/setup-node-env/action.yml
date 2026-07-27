@@ -1,0 +1,16 @@
+name: Setup Node environment
+description: Checkout, set up Node with npm cache, and install dependencies via npm ci
+inputs:
+  node-version:
+    description: Node.js version to use
+    required: true
+runs:
+  using: composite
+  steps:
+    - uses: actions/checkout@v7
+    - uses: actions/setup-node@v7
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: 'npm'
+    - run: npm ci
+      shell: bash
