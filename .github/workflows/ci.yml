@@ -18,6 +18,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-node-env
         with:
           node-version: 24.x
@@ -30,6 +31,7 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
         # Vite 7 requires Node 20.19+ or 22.12+
     steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-node-env
         with:
           node-version: ${{ matrix.node-version }}
@@ -42,6 +44,7 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
         # Vite 7 requires Node 20.19+ or 22.12+
     steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-node-env
         with:
           node-version: ${{ matrix.node-version }}
@@ -54,6 +57,7 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
         # Vite 7 requires Node 20.19+ or 22.12+
     steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-node-env
         with:
           node-version: ${{ matrix.node-version }}
@@ -66,6 +70,7 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
         # Vite 7 requires Node 20.19+ or 22.12+
     steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: ./.github/actions/setup-node-env
         with:
           node-version: ${{ matrix.node-version }}
